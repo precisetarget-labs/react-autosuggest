@@ -36,6 +36,7 @@ export default class Autosuggest extends Component {
     },
     onSuggestionSelected: PropTypes.func,
     onSuggestionHighlighted: PropTypes.func,
+    onSubmitWithoutSuggestion: PropTypes.func,
     renderInputComponent: PropTypes.func,
     renderSuggestionsContainer: PropTypes.func,
     getSuggestionValue: PropTypes.func.isRequired,
@@ -375,6 +376,16 @@ export default class Autosuggest extends Component {
     this.resetHighlightedSuggestion();
   };
 
+  onSubmitWithoutSuggestion = (event, data) => {
+    const { alwaysRenderSuggestions, onSubmitWithoutSuggestion } = this.props;
+
+    onSubmitWithoutSuggestion(event, data);
+
+    if (!alwaysRenderSuggestions) {
+      this.onSuggestionsClearRequested();
+    }
+  };
+
   onSuggestionClick = event => {
     const { alwaysRenderSuggestions, focusInputOnSuggestionClick } = this.props;
     const { sectionIndex, suggestionIndex } = this.getSuggestionIndices(
@@ -475,7 +486,8 @@ export default class Autosuggest extends Component {
       theme,
       getSuggestionValue,
       alwaysRenderSuggestions,
-      highlightFirstSuggestion
+      highlightFirstSuggestion,
+      onSubmitWithoutSuggestion
     } = this.props;
     const {
       isFocused,
@@ -639,6 +651,10 @@ export default class Autosuggest extends Component {
               setTimeout(() => {
                 this.justSelectedSuggestion = false;
               });
+            }
+
+            else {
+              onSubmitWithoutSuggestion && this.onSubmitWithoutSuggestion(event, { value });
             }
 
             break;
