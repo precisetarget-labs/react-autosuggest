@@ -1,10 +1,28 @@
 {
   "env": {
     "development": {
-      "presets": ["es2015", "stage-0", "react"]
+      "presets": [
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ],
+        "react",
+        "stage-0"
+      ]
     },
     "production": {
-      "presets": ["es2015", "stage-0", "react"],
+      "presets": [
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ],
+        "react",
+        "stage-0"
+      ],
       "plugins": [
         [
           "transform-react-remove-prop-types", {
